@@ -2,6 +2,11 @@
 
 @section('content')
 
+<div>
+    <a href="/posts/create" class="btn btn-success">Create New Post</a>
+</div>
+<br>
+
 <div class="card">
     <div class="card-header text-center">
         Content
@@ -11,10 +16,12 @@
             <div>
                 <h5 class="card-title">{{ $post->name }}</h5>
                 <p class="card-text">{{ $post->description }}</p>
-                <a href="#" class="btn btn-primary">View...</a>
+                <a href="/posts/{{ $post->id }}" class="btn btn-primary">View...</a>
             </div><hr>
         @endforeach
         
     </div>
 </div>
 @endsection
+
+{{-- 43min --}}
