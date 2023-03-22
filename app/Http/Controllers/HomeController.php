@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Requests\StorePostRequest;
 
 class HomeController extends Controller
 {
+    public function testRoot()
+    {
+        dd("this is the root path");
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +20,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data = Post::all();
+        // $data = Post::all();
+        $data = Post::orderBy('id','desc')->get();
+        
         return view('home',compact('data'));
     }
 
@@ -35,13 +42,24 @@ class HomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $post = new Post();
-        $post->name = $request->name;
-        $post->description = $request->description;
+        // $request->validate([
+        //     'name' => 'required|unique:posts|max:100',
+        //     'description' => 'required|max:255',
+        // ]);
 
-        $post->save();
+        // $post = new Post();
+        // $post->name = $request->name;
+        // $post->description = $request->description;
+        // $post->save();
+
+        //from model fillable method
+        Post::create([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
         return redirect('/posts');
     }
 
@@ -51,9 +69,13 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        dd($id);
+        //dd($post);
+        //$post = Post::findOrFail($id); // 404 for not exit id
+
+        dd($post->categories->name);
+        return view('show',compact('post'));
     }
 
     /**
@@ -62,9 +84,10 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        //$post = Post::findOrFail($id); // 404 for not exit id
+        return view('edit',compact('post'));
     }
 
     /**
@@ -74,9 +97,25 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StorePostRequest $request, Post $post)
     {
-        //
+        // $request->validate([
+        //     'name' => 'required|unique:posts|max:100',
+        //     'description' => 'required|max:255',
+        // ]);
+
+        // $post = Post::findOrFail($id);
+        // $post->name = $request->name;
+        // $post->description = $request->description;
+
+        // $post->save();
+
+        $post->update([
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
+
+        return redirect('/posts');
     }
 
     /**
@@ -85,8 +124,10 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        // $post= Post::findOrFail($id);
+        $post->delete();
+        return redirect('/posts');
     }
 }
