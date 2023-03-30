@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Requests\StorePostRequest;
@@ -33,7 +34,8 @@ class HomeController extends Controller
      */
     public function create()
     {
-        return view('create');
+        $categories = Category::all();
+        return view('create', compact('categories'));
     }
 
     /**
@@ -54,11 +56,11 @@ class HomeController extends Controller
         // $post->description = $request->description;
         // $post->save();
 
+        $validated = $request->validated();
+        // dd($validated);
+
         //from model fillable method
-        Post::create([
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
+        Post::create($validated);
 
         return redirect('/posts');
     }
@@ -74,7 +76,7 @@ class HomeController extends Controller
         //dd($post);
         //$post = Post::findOrFail($id); // 404 for not exit id
 
-        dd($post->categories->name);
+        // dd($post->categories->name);
         return view('show',compact('post'));
     }
 
@@ -87,7 +89,10 @@ class HomeController extends Controller
     public function edit(Post $post)
     {
         //$post = Post::findOrFail($id); // 404 for not exit id
-        return view('edit',compact('post'));
+
+        $categories = Category::all();
+
+        return view('edit',compact('post','categories'));
     }
 
     /**
@@ -110,10 +115,9 @@ class HomeController extends Controller
 
         // $post->save();
 
-        $post->update([
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
+        $validated = $request->validated();
+
+        $post->update($validated);
 
         return redirect('/posts');
     }

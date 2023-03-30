@@ -27,3 +27,7 @@ Route::get('/', [HomeController::class, 'testRoot'])->name('root');
 Route::resource('posts',HomeController::class);
 
 
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
