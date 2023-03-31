@@ -2,6 +2,10 @@
 
 @section('content')
     <div>
+        <a href="logout" class="btn btn-secondary">Logout</a>
+    </div>
+    <br>
+    <div>
         <a href="{{ route('root') }}" class="btn btn-success">go to root path</a>
         <a href="/posts/create" class="btn btn-success">Create New Post</a>
     </div>
