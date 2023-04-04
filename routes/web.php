@@ -1,5 +1,7 @@
 <?php
 
+use App\Test;
+use App\Container;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -23,7 +25,18 @@ use App\Http\Controllers\HomeController;
 //     return view('dbconn');
 // });
 
-Route::get('/', [HomeController::class, 'testRoot'])->name('root');
+// Route::get('/', [HomeController::class, 'testRoot'])->name('root');
+Route::get('/', function(){
+    app()->bind('test',function(){
+        return new Test('Kaung');
+    });
+// 36min
+    $test = resolve('test');
+
+    // $test = resolve(App\Test::class);
+    dd($test);
+});
+
 
 Route::resource('posts',HomeController::class);
 // Route::resource('posts',HomeController::class)->middleware(['auth']);

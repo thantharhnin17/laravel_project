@@ -27,6 +27,8 @@ class HomeController extends Controller
     {
         // $data = Post::all();
         //select * from posts where user_id = 1
+        $post = Post::pluck('name');
+        dd($post);
         
         $data = Post::where('user_id', auth()->id())->orderBy('id','desc')->get();
         
