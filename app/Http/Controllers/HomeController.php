@@ -11,7 +11,7 @@ use App\Http\Requests\StorePostRequest;
 class HomeController extends Controller
 {
     public function __construct(){
-        $this->middleware('auth')->except('index','create');
+        $this->middleware('auth');
     }
 
     public function testRoot()
@@ -26,7 +26,9 @@ class HomeController extends Controller
     public function index()
     {
         // $data = Post::all();
-        $data = Post::orderBy('id','desc')->get();
+        //select * from posts where user_id = 1
+        
+        $data = Post::where('user_id', auth()->id())->orderBy('id','desc')->get();
         
         return view('home',compact('data'));
     }
@@ -81,6 +83,14 @@ class HomeController extends Controller
         //$post = Post::findOrFail($id); // 404 for not exit id
 
         // dd($post->categories->name);
+
+        //auth
+        // if($post->user_id != auth()->id()){
+        //     abort(403);
+        // }
+        //by policy
+        $this->authorize('view', $post);
+
         return view('show',compact('post'));
     }
 

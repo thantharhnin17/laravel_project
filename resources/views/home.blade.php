@@ -1,8 +1,9 @@
 @extends('layout')
 
 @section('content')
-    <div>
-        <a href="logout" class="btn btn-secondary">Logout</a>
+    <div class="d-flex text-end justify-content-end align-items-baseline">
+        <p class="fw-bold">{{Auth::user()->name}}</p>
+        <a href="logout" class="btn btn-secondary ms-2">Logout</a>
     </div>
     <br>
     <div>

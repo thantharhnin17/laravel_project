@@ -24,9 +24,9 @@ class DatabaseSeeder extends Seeder
         //     ->create();
 
         $this->call([
-            //UserSeeder::class,
-            // PostSeeder::class,
-            CategorySeeder::class,
+            // UserSeeder::class,
+            PostSeeder::class,
+            //CategorySeeder::class,
         ]);
     }
 }
